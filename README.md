@@ -25,3 +25,11 @@ This connection string tells the application to connect to a RabbitMQ server run
 ## Proof of Simulating slow subscriber
 ![Proof of Simulating slow subscriber.](Simulating%20slow%20subscriber.png)
 The image shows the condition of the first chart that has a spike when simulating a subscriber who is slow in processing data. It can be seen that there are about more than 10 messages in the queue at one time for a few seconds and then the number decreases. This happens because the subscriber takes 10ms to process a message, so the messages pile up temporarily in rabbitmq when the publisher publishes many events in a short time. Also i run the publisher app 3 times in quick succession which made it possible that the queue rises above 10.
+
+## Proof of Running 3 Subscriber Simultaniously 
+![Proof of Running 3 Subscriber Simultaniously .](Running%203%20Subscriber.png)
+The image shows 3 subscriber programs that receive messages from the publisher that are run several times.
+## Proof of Monitoring rabbitmq with 3 Subscriber
+![Proof of Monitoring rabbitmq with 3 Subscriber.](Monitoring%203%20Subscriber.png)
+
+The image shows the rabbitmq chart. It can be seen that queued messages have a lower peaked spike of only 3 compare to more than 10 in only 1 subscriber. This is because messages in the queue will be sent to one subscriber, not to all subscribers, so when waiting for one subscriber to process data, rabbitmq can send the next message to another subscriber who has finished processing data or is in an empty state. This is also seen in the previous image because each subscriber receives messages in a different order.
